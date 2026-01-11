@@ -1,0 +1,346 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    user-select: none;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #87CEEB; /* Sky blue background */
+    position: relative;
+    overflow: hidden;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.85); /* Darker background for menus */
+    z-index: 10;
+}
+
+.hidden {
+    display: none !important;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: #ff9900;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 5px #cc7a00;
+    transition: all 0.1s;
+}
+
+button:active {
+    box-shadow: 0 2px #cc7a00;
+    transform: translateY(3px);
+}
+
+button:disabled {
+    background-color: #888;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+h1 {
+    font-size: 48px;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px #000;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #fff;
+    border-bottom: 2px solid #ff9900;
+    padding-bottom: 10px;
+}
+
+/* Grid Layouts */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    width: 80%;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.wanko-card {
+    border: 2px solid #666;
+    padding: 10px;
+    background: #444;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.wanko-card.owned {
+    border-color: #ffd700;
+    background: #555;
+}
+
+.wanko-card.selected {
+    background: #0066cc;
+    border-color: #00ccff;
+}
+
+.wanko-card:hover {
+    transform: scale(1.05);
+}
+
+.wanko-icon {
+    font-size: 50px;
+    margin-bottom: 5px;
+}
+
+.wanko-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.back-btn {
+    margin-top: 20px;
+    background-color: #555;
+    box-shadow: 0 5px #333;
+}
+
+.back-btn:active {
+    box-shadow: 0 2px #333;
+}
+
+/* Gacha Animation */
+#capsule {
+    font-size: 100px;
+    margin: 20px;
+    transition: transform 0.5s;
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0) rotate(-5deg); }
+    20%, 80% { transform: translate3d(2px, 0, 0) rotate(5deg); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0) rotate(-5deg); }
+    40%, 60% { transform: translate3d(4px, 0, 0) rotate(5deg); }
+}
+
+#gacha-result {
+    margin-top: 20px;
+    font-size: 24px;
+    color: #ffd700;
+    min-height: 100px;
+}
+
+/* Formation Specific */
+.formation-container {
+    display: flex;
+    width: 90%;
+    justify-content: space-around;
+    height: 60vh;
+}
+
+.formation-list {
+    width: 45%;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+/* Battle Styles */
+#battle-screen {
+    background-color: #87CEEB; /* Sky */
+    position: relative;
+    overflow: hidden;
+    z-index: 50; /* Ensure it's above other screens if overlaps */
+}
+
+#battle-ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+#battle-field {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 100px; /* Below UI */
+    height: calc(100% - 220px); /* UI top and bottom */
+}
+
+#unit-spawner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    z-index: 100;
+}
+
+.spawn-btn {
+    width: 80px;
+    height: 80px;
+    margin: 0 5px;
+    background: #eee;
+    border: 3px solid #ccc;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+}
+
+.spawn-btn:active {
+    background: #ddd;
+}
+
+.spawn-btn.cooldown {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.spawn-btn .cost {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: yellow;
+    color: black;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* Battle Entities */
+.entity {
+    position: absolute;
+    font-size: 40px;
+    transition: transform 0.1s linear;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.entity.wanko {
+    bottom: 20px; /* Ground level */
+    z-index: 10;
+}
+
+.entity.enemy {
+    bottom: 20px;
+    transform: scaleX(-1); /* Face left */
+    z-index: 10;
+}
+
+.entity.air {
+    bottom: 150px;
+}
+
+.base {
+    position: absolute;
+    bottom: 20px;
+    font-size: 80px;
+    z-index: 5;
+}
+
+.base.player {
+    left: 10px;
+}
+
+.base.enemy {
+    right: 10px;
+}
+
+.hp-bar {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: red;
+}
+
+.hp-bar-inner {
+    height: 100%;
+    background: lime;
+    width: 100%;
+}
+
+.projectile {
+    position: absolute;
+    font-size: 20px;
+    z-index: 20;
+}
+
+/* Projectile Animations */
+@keyframes dropDown {
+    from { transform: translateY(0); }
+    to { transform: translateY(130px); }
+}
+
+@keyframes shootRight {
+    from { transform: translateX(0); }
+    to { transform: translateX(50px); }
+}
+
+.projectile.drop-down {
+    animation: dropDown 0.5s linear forwards;
+}
+
+.projectile.shoot-right {
+    animation: shootRight 0.2s linear forwards;
+}
