@@ -296,9 +296,12 @@ let battleState = {
 };
 
 const ENEMY_TYPES = [
-    { name: "Snake", icon: "🐍", hp: 50, dmg: 5, speed: 2, range: 0, attackRate: 1000 },
-    { name: "Boar", icon: "🐗", hp: 150, dmg: 15, speed: 3, range: 0, attackRate: 1500 },
-    { name: "Alien", icon: "👽", hp: 300, dmg: 30, speed: 1, range: 100, attackRate: 2000 }
+    { name: "基本ニャンコ", icon: "🐱", hp: 50, dmg: 5, speed: 2, range: 0, attackRate: 1000 },
+    { name: "タンクニャンコ", icon: "🐯", hp: 150, dmg: 10, speed: 1, range: 0, attackRate: 1500 },
+    { name: "忍者ニャンコ", icon: "🐆", hp: 80, dmg: 15, speed: 4, range: 0, attackRate: 500 },
+    { name: "空飛ぶニャンコ", icon: "🚁", hp: 120, dmg: 20, speed: 2, range: 50, attackRate: 2000 },
+    { name: "悪魔ニャンコ", icon: "😈", hp: 300, dmg: 40, speed: 1, range: 100, attackRate: 3000 },
+    { name: "巨神ニャンコ", icon: "👹", hp: 500, dmg: 50, speed: 1, range: 0, attackRate: 4000 }
 ];
 
 function startBattle(stageNum) {
@@ -412,8 +415,22 @@ function battleLoop() {
     document.getElementById('battle-money').innerText = Math.floor(battleState.money);
 
     // 2. Enemy Spawning Logic
-    if (Math.random() < 0.01 + (battleState.stage * 0.005)) { // Chance increases with stage
-        const enemyType = ENEMY_TYPES[Math.floor(Math.random() * Math.min(ENEMY_TYPES.length, battleState.stage))];
+    // Simple wave logic: harder enemies unlocked by stage
+    // Stage 1: Index 0-1 (Basic, Tank)
+    // Stage 2: Index 0-2 (Ninja)
+    // Stage 3: Index 0-3 (Flying)
+    // Stage 4: Index 0-4 (Evil)
+    // Stage 5: Index 0-5 (Titan)
+    const spawnRate = 0.01 + (battleState.stage * 0.005);
+    if (Math.random() < spawnRate) {
+        const maxIndex = Math.min(ENEMY_TYPES.length - 1, battleState.stage);
+        // Weigh towards weaker enemies slightly
+        let enemyIndex = Math.floor(Math.random() * (maxIndex + 1));
+
+        // Ensure boss types don't spawn too often in early stages if possible,
+        // but simple random is fine for this scale.
+
+        const enemyType = ENEMY_TYPES[enemyIndex];
         battleState.enemies.push({
             id: Date.now() + Math.random(),
             type: enemyType,
